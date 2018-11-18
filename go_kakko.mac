@@ -1,0 +1,59 @@
+﻿/*
+# カーソル位置の対応する何かに移動する秀丸マクロ
+
+# 移動の優先順位
+1. 対応するHTMLタグへ移動
+2. 対応する #ifdef～#endif へ移動
+3. 対応する括弧へ移動
+
+
+# 必要な外部マクロ
+- Ｃプリプロセッサ対応条件スキャン<br>
+  https://hide.maruo.co.jp/lib/macro/scanif.html
+
+- 対応するHTMLタグへの移動を行うマクロ<br>
+  http://home.e-catv.ne.jp/longring/hidemaru/tag.html
+
+
+適当なショートカットキーに割り当てて下さい。
+
+# 連絡先
+http://d.hatena.ne.jp/ohtorii/ 		<br>
+https://twitter.com/ohtorii 		<br>
+https://github.com/ohtorii 			<br>
+*/
+
+disableerrormsg;
+#old_x = x;
+#old_y = y;
+
+if(false){
+	execmacro macrodir + "\\TagIdou.mac";
+}else{
+	//秀丸エディタv8.00以降で利用可能な命令。
+	gotagpair;
+}
+
+if((x==#old_x) && (y==#old_y)){
+	//カーソル移動なし。 #if～#endifの移動を行う。
+	execmacro macrodir + "\\scanifb.mac";
+	if((x==#old_x) && (y==#old_y)){
+		//カーソル移動なし。 括弧の移動を行う。
+		gokakko;
+	}
+}
+
+if((x!=#old_x) || (y!=#old_y)){
+	#K_SHIFT	= 0x10;
+	if(iskeydown(#K_SHIFT)){
+		//範囲選択する
+		#cur_x = x;
+		#cur_y = y;
+		moveto #old_x, #old_y;
+		beginsel;
+		moveto #cur_x, #cur_y;
+		endsel;
+	}
+}
+
+enableerrormsg;
