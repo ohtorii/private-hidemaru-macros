@@ -1,0 +1,39 @@
+﻿/*次の段落へ移動する
+VIMの段落単位移動を真似てみた。
+
+# 推奨キーアサイン
+Ctrl-}
+
+# 連絡先
+http://d.hatena.ne.jp/ohtorii/
+https://twitter.com/ohtorii
+https://github.com/ohtorii
+*/
+
+disabledraw;
+$s = searchbuffer;
+#f = searchoption;
+call main;
+setsearch $s, #f;
+enabledraw;
+endmacro;
+
+main:
+	##prev_lineno=lineno;
+	while(true){
+		searchdown "^\\s*$",regular,nohilight;
+		if(##prev_lineno==lineno){
+			//候補無し
+			break;
+		}
+		if(##prev_lineno+1 < lineno){
+			//一行以上動いたのでカーソルが「空白行→段落行→空白行」と移動した。
+			movetolineno 1,lineno;
+			break;
+		}
+		//カーソルは一行動いた
+		//空白行にヒットしたため更に検索を行う。
+		##prev_lineno = lineno;
+	}
+	return;
+
