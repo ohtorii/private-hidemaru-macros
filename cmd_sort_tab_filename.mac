@@ -1,0 +1,60 @@
+/*
+# タブをファイル名でソートするマクロ
+
+# 連絡先
+https://github.com/ohtorii/everything	<br>
+http://d.hatena.ne.jp/ohtorii/			<br>
+https://twitter.com/ohtorii				<br>
+*/
+
+#mode=1;	//ファイル名
+
+if(#mode ==0 )endmacro;
+#hCurrent=hidemaruhandle(0);
+#c=tabtotal;
+#i = 0;
+while( #i < #c ) {
+  #handle = gettabhandle( true, 0, #i );
+  #aHandle[#i] = #handle;
+  if(#mode==1){
+	call GetFileName basename[#handle];
+	$aName[#i] = $$return;
+	
+    //$aName[#i] = basename[#handle];
+    //$aName[#i] = tolower(filename[#handle]);
+  } else {
+    $aName[#i] = filetype[#handle];
+  }
+  #i = #i + 1;
+}
+openfile "/h";
+#hTemp=hidemaruhandle(0);
+#i = 0;
+while( #i < #c ) {
+  insert $aName[#i] +"\t"+str(#aHandle[#i])+"\n";
+  #i=#i+1;
+}
+selectall;
+run "sort.exe <con >con";
+clearupdated;
+gofiletop;
+#i = 0;
+while( #i < #c ) {
+  $line = gettext2(0,lineno,linelen2,lineno);
+  #handle = val( rightstr($line,linelen2-strstr($line,"\t")-1) );
+  settaborder #handle,#i;
+  #i=#i+1;
+  movetolineno 1,lineno+1;
+}
+setactivehidemaru #hCurrent;
+closehidemaruforced #hTemp;
+endmacro;
+
+//拡張子を除いたファイル名の取得
+//foo.bar -> foo
+GetFileName:
+	##i = strstr($$1, ".");
+	if(##i == -1){
+		return $$1;
+	}
+	return leftstr($$1,##i);
