@@ -17,6 +17,11 @@ $g_uniq_folders[0]="";
 $g_tab_folder[0]="";
 #g_tab_num=0;
 
+//タブをファイル名でソートするマクロ
+$g_sort_tab_macro=macrodir+"\\scripts\\cmd_sort_tab_filename.mac";
+if(! existfile($g_sort_tab_macro)){
+	$g_sort_tab_macro = "";
+}
 
 
 debuginfo 0;
@@ -34,6 +39,7 @@ main:
 	call collect_folder, $$label_name;
 	call debug_dump_uniq_folder;
 	call grouping;
+	call sort;
 	return;
 
 collect_folder:
@@ -47,13 +53,13 @@ collect_folder:
 			##handle = gettabhandle( true, ##i, ##j );
 			call $$label, ##handle;
 			$$item = $$return;
-			
+
 			call insert_uniq_folder $$item;
-			
+
 			#g_tab_handle[#g_tab_num]=##handle;
 			$g_tab_folder[#g_tab_num]=$$item;
 			#g_tab_num = #g_tab_num + 1;
-		    
+
 		    ##j = ##j + 1;
 		}
 		##i = ##i + 1;
@@ -95,15 +101,50 @@ grouping:
 	while(##i<#g_tab_num){
 		call find_uniq_folder_index $g_tab_folder[##i];
 		##tab_index=##return;
-		
+
 		//debuginfo str(##tab_index) + "@" + $g_tab_folder[##i];
 		settabgroup #g_tab_handle[##i], ##tab_index;
-		
+
 		##i = ##i + 1;
 	}
 	return ;
-	
-	
+
+
+sort:
+	debuginfo "==== sort ====";
+	if($g_sort_tab_macro==""){
+		return;
+	}
+	##current_hidemaru = hidemaruhandle(0);
+	//タブグループ先頭のハンドルを集める
+	##handle[0]=0;
+	##handle_num=0;
+	##i = 0;
+	while( ##i < tabgrouptotal ) {
+		##grouptop = gettabhandle( true, ##i, 0 );
+		debuginfo filename[##grouptop];
+		if(2 <= tabtotal[##grouptop]){
+			##handle[##handle_num]=##grouptop;
+			##handle_num = ##handle_num + 1;
+		}else{
+			//タブが１つなのでソートする必要性がない。
+		}
+		##i = ##i + 1;
+	}
+
+	//タブグループをソートする
+	##i = 0;
+	while(##i < ##handle_num){
+		setactivehidemaru ##handle[##i];
+		execmacro $g_sort_tab_macro;
+		##i = ##i + 1;
+	}
+
+	//元の秀丸エディタに戻す
+	setactivehidemaru ##current_hidemaru;
+	return ;
+
+
 debug_dump_uniq_folder:
 	debuginfo "==== debug_dump_uniq_folder ====";
 	##i=0;
@@ -112,6 +153,9 @@ debug_dump_uniq_folder:
 		##i = ##i + 1;
 	}
 	return ;
+
+
+
 
 get_directory:
 	return directory[##1];
