@@ -1,0 +1,28 @@
+﻿/*
+# 左のタブをすべて閉じるマクロ
+
+# 連絡先
+https://github.com/ohtorii/everything	<br>
+http://d.hatena.ne.jp/ohtorii/			<br>
+https://twitter.com/ohtorii				<br>
+*/
+call main;
+endmacro;
+
+main:
+	##i=0;
+	while(true){
+		##handle = gettabhandle( true, 0, ##i );
+		if( ##handle == hidemaruhandle(0) ) {
+			//自分自身
+			return;
+		} else {
+			if( updated[##handle] ) {
+			  //message filename2[##handle] + "更新されています。";
+			  ##i = ##i + 1;
+			} else {
+			  closehidemaru ##handle;
+			}
+		}
+	}
+	return;
