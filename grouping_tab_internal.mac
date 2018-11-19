@@ -162,3 +162,7 @@ get_directory:
 
 get_extension:
 	return filetype[##1];
+
+get_basename:
+	return basename[##1];
+	
