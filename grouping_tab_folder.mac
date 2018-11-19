@@ -1,0 +1,10 @@
+﻿/*
+# タブをフォルダ毎にグルーピングするマクロ
+
+# 連絡先
+https://github.com/ohtorii/everything	<br>
+http://d.hatena.ne.jp/ohtorii/			<br>
+https://twitter.com/ohtorii				<br>
+*/
+
+execmacro currentmacrodirectory+"\\grouping_tab_internal.mac", "get_directory";
