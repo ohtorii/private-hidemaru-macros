@@ -11,7 +11,8 @@
 |左のタブを全て閉じる|close_tab_left_all.mac|　|　|
 |タブをファイル名でソートする|cmd_sort_tab_filename.mac|　|　|
 |タブを拡張子でソートする|cmd_sort_tab_ext.mac|　|　|
-|タブをファイル名でグルーピングする|grouping_tab_folder.mac|　|　|
+|タブをフォルダ名でグルーピングする|grouping_tab_folder.mac|　|　|
+|タブをベース名（ドライブ、パスを含まない名前）でグルーピングする|grouping_tab_basename.mac|　|　|
 |タブを拡張子名でグルーピングする|grouping_tab_extension|　|　|
 |タブをXXXでグルーピングする（内部利用）|grouping_tab_internal.mac|　|grouping_tab_*.macから呼び出される内部利用のマクロです|
 
