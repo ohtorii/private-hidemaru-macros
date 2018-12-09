@@ -1,0 +1,28 @@
+﻿/*タブグループを閉じる
+
+# 連絡先
+https://github.com/ohtorii/everything	<br>
+http://d.hatena.ne.jp/ohtorii/			<br>
+https://twitter.com/ohtorii				<br>
+*/
+#current_hidemaru=hidemaruhandle(0);
+
+#handles[0]=-1;
+#num_handles=0;
+#i = 0;
+while( #i < tabtotal ) {
+    #handles[#i]=gettabhandle( true, 0, #i );
+    #num_handles = #num_handles + 1;
+    #i = #i + 1;
+}
+
+#i=0;
+while(#i<#num_handles){
+	if(#handles[#i]!=#current_hidemaru){
+		//自分以外を終了させる
+		closehidemaru #handles[#i];
+	}
+	#i = #i + 1;
+}
+//最後に自分自身を終了する
+exit;
