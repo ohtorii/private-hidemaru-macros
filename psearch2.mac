@@ -1,0 +1,43 @@
+﻿/*検索結果をポップアップ表示する秀丸マクロ。
+
+【旧バージョン】
+https://hide.maruo.co.jp/lib/macro/psearch.html
+
+【連絡先】
+https://ohtorii.hatenadiary.jp/
+https://github.com/ohtorii
+https://twitter.com/ohtorii
+*/
+
+setcompatiblemode 0x20000;
+call main;
+endmacro;
+
+main:
+	//  	単語を検索文字列として取得＆強調
+	##base_searchoption = searchoption;
+	/*
+	単語の検索		ビット0		状況から判断する
+	置換かどうか	ビット2		置換は無効にする
+	a=1010
+	*/
+	##base_searchoption = 0xfffffffa & ##base_searchoption;
+
+	if (selecting) {
+		//pass
+	}else{
+		##old_column=column;
+		##old_lineno=lineno;
+		selectword;
+		movetolineno ##old_column+1,##old_lineno;
+	}
+
+	getsearch;
+
+	//0x1000 = 強調表示
+	setsearch searchbuffer, 0x1000  | ##base_searchoption;
+
+	//hilightfound 1;
+
+	foundlist;
+	return ;
