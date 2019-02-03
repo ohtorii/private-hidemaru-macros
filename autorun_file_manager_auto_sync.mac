@@ -1,0 +1,21 @@
+﻿/*ファイルマネージャー枠を自動で同期する
+
+＊使い方
+自動起動マクロに登録する。
+
+2019/02/03 ohtorii
+*/
+call main;
+endmacro;
+
+main:
+	loaddll "HmExplorerPane.dll";
+	##n = dllfunc("GetMode",hidemaruhandle(0));
+	if(##n==-1){
+	    return false;
+	}
+
+	##handle = dllfunc("GetWindowHandle", hidemaruhandle(0) );
+	// 252 = 同期
+	##ret = sendmessage(##handle, 0x111, 252, 0);
+	return ##ret;

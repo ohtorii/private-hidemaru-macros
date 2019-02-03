@@ -7,6 +7,7 @@
 |検索結果をポップアップ表示する|psearch2.mac|　|xyzzyのpsearchに相当するマクロ|
 |対応する「HTMLタグ、Cプリプロセッサ(#if～#endif)、括弧」に移動する|go_kakko.mac|　|なし|
 |領域を少しずつ選択する|cmd_select_word.mac.mac|　|[mobitan](http://mobitan.org/)氏作成[cmdSelectBetween.mac](http://mobitan.org/hm/misc/#cmdSelectBetween)のラッパーマクロです|
+|ファイルマネージャー枠を自動的に同期する|autorun_file_manager_auto_sync.mac|　|なし|
 
 # 連絡先
 
